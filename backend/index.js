@@ -4,6 +4,8 @@ const helmet = require('helmet');
 
 const authRoutes = require('./routes/auth');
 
+const errorController = require('./controllers/error');
+
 const app = express();
  
 //  parsing the request body
@@ -23,6 +25,10 @@ app.use(function(req, res, next) {
 });
 
 app.use('/auth', authRoutes);
+
+app.use(errorController.get404);
+
+app.use(errorController.get500);
 
 const port = process.env.PORT || 3000;
 
