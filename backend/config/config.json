@@ -1,0 +1,6 @@
+{
+    "host": "localhost",
+    "user":"root",
+    "database": "banking_app",
+    "password": "password" 
+}
