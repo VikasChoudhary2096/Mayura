@@ -11,7 +11,7 @@ import { ErrorHandlerService } from "./error-handler.service";
 @Injectable({
   providedIn: "root",
 })
-export class AuthService {
+export class AuthService  {
   private url = "http://localhost:3000/auth";
 
   isUserLoggedIn$ = new BehaviorSubject<boolean>(false);
@@ -61,4 +61,5 @@ export class AuthService {
         )
       );
   }
+
 }
