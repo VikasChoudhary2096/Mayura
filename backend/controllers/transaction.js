@@ -2,10 +2,31 @@ const { validationResult } = require('express-validator');
 
 const Transaction = require('../models/transaction');
 
+const PdfCreate = require('../util/createPdf');
+
 exports.fetchAll = async (req, res, next) => {
   try {
     const [allTransaction] = await Transaction.fetchAll(req.userId);
     res.status(200).json(allTransaction);
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+exports.fetchPdf = async (req, res, next) => {
+  try {
+    
+    const [allTransaction] = await Transaction.fetchAll(req.userId);
+    const pdfLink = await PdfCreate(req.userId, allTransaction);
+    
+    const responseBody = {
+      "summary": pdfLink
+    };
+
+    res.status(200).json(responseBody);
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;

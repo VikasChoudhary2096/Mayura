@@ -12,4 +12,6 @@ router.get('/', transaction, transactionController.fetchAll);
 
 router.post('/new', transaction, transactionController.postTransaction);
 
+router.post('/getPdf', transaction, transactionController.fetchPdf);
+
 module.exports = router;
