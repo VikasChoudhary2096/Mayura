@@ -17,7 +17,7 @@ exports.signup = async (req, res, next) => {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
-    console.log(password);
+  console.log(password);
   try {
     const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -26,6 +26,7 @@ exports.signup = async (req, res, next) => {
       username: username,
       email: email,
       password: hashedPassword,
+      role: "normal_user"
     };
 
     const result = await User.save(userDetails);
@@ -40,6 +41,7 @@ exports.signup = async (req, res, next) => {
 };
 
 exports.login = async (req, res, next) => {
+  
   const email = req.body.email;
   const password = req.body.password;
   const errors = validationResult(req);
@@ -74,11 +76,52 @@ exports.login = async (req, res, next) => {
       {
         email: storedUser.email,
         userId: storedUser.id,
+        role: storedUser.role
       },
       'secretfortoken',
       { expiresIn: '1h' }
     );
     res.status(200).json({ token: token, userId: storedUser.id });
+  } catch (err) {
+    if (!err.statusCode) {
+      err.statusCode = 500;
+    }
+    next(err);
+  }
+};
+
+
+exports.verify = async (req, res, next) => {
+  
+  const email = req.email;
+  console.log(email);
+  try {
+    const user = await User.findByEmail(email);
+
+    if (user[0].length !== 1) {
+      const error = new Error('A user with this email could not be found.');
+      error.statusCode = 401;
+      throw error;
+    } else{
+        console.log("User found", user[0][0].username);
+    }
+
+    const storedUser = user[0][0];
+
+    const token = jwt.sign(
+      {
+        email: storedUser.email,
+        userId: storedUser.id,
+        role: storedUser.role
+      },
+      'secretfortoken',
+      { expiresIn: '1h' }
+    );
+      console.log(token);
+    const result = await User.verify(storedUser.id);
+
+    res.status(200).json({ token: token, userId: storedUser.id, message: "user account is verified" });
+
   } catch (err) {
     if (!err.statusCode) {
       err.statusCode = 500;
