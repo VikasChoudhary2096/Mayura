@@ -4,7 +4,7 @@ const Transaction = require('../models/transaction');
 
 exports.fetchAll = async (req, res, next) => {
   try {
-    const [allTransaction] = await Transaction.fetchAll();
+    const [allTransaction] = await Transaction.fetchAll(req.userId);
     res.status(200).json(allTransaction);
   } catch (err) {
     if (!err.statusCode) {
@@ -18,7 +18,6 @@ exports.postTransaction = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()){
-    console.log(errors);  
     return res.status(400).json({ errors: errors.array() });
   };
 

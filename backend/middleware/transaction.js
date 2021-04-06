@@ -20,14 +20,12 @@ module.exports = (req, res, next) => {
     error.statusCode = 401;
     throw error;
   }
-  console.log("role", decodedToken.role);
 //   if not a verified user
   if (decodedToken.role != "verified_user") {
     const error = new Error('Not verified!');
     error.statusCode = 403;
     throw error;
   }
-  console.log(decodedToken);
   req.isLoggedIn = true;
   req.userId = decodedToken.userId;
   req.email = decodedToken.email;

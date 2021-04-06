@@ -9,7 +9,6 @@ exports.signup = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()){
-    console.log(errors);  
     return res.status(400).json({ errors: errors.array() });
   }
 
@@ -17,7 +16,6 @@ exports.signup = async (req, res, next) => {
   const username = req.body.username;
   const email = req.body.email;
   const password = req.body.password;
-  console.log(password);
   try {
     const hashedPassword = await bcrypt.hash(password, 12);
 
@@ -47,7 +45,6 @@ exports.login = async (req, res, next) => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()){
-    console.log(errors);  
     return res.status(400).json({ errors: errors.array() });
   }
 
@@ -94,7 +91,6 @@ exports.login = async (req, res, next) => {
 exports.verify = async (req, res, next) => {
   
   const email = req.email;
-  console.log(email);
   try {
     const user = await User.findByEmail(email);
 
@@ -117,7 +113,6 @@ exports.verify = async (req, res, next) => {
       'secretfortoken',
       { expiresIn: '1h' }
     );
-      console.log(token);
     const result = await User.verify(storedUser.id);
 
     res.status(200).json({ token: token, userId: storedUser.id, message: "user account is verified" });
