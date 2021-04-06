@@ -112,7 +112,7 @@ exports.verify = async (req, res, next) => {
       {
         email: storedUser.email,
         userId: storedUser.id,
-        role: storedUser.role
+        role: "verified_user"
       },
       'secretfortoken',
       { expiresIn: '1h' }

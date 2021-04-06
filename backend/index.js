@@ -4,6 +4,8 @@ const helmet = require('helmet');
 
 const authRoutes = require('./routes/auth');
 
+const transactionRoutes = require('./routes/transaction');
+
 const errorController = require('./controllers/error');
 
 const app = express();
@@ -25,6 +27,8 @@ app.use(function(req, res, next) {
 });
 
 app.use('/auth', authRoutes);
+
+app.use('/transaction', transactionRoutes);
 
 app.use(errorController.get404);
 
