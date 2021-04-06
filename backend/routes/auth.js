@@ -13,7 +13,7 @@ const authController = require('../controllers/auth');
 router.post(
   '/signup',
   [
-    body('name').trim().not().isEmpty(),
+    body('name').trim().not().isEmpty().isAlphanumeric(),
     body('username')
        .trim()
        .not()
