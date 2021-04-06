@@ -9,17 +9,24 @@ module.exports = class User {
   }
 
   static findByEmail(email) {
-    return db.execute('SELECT * FROM user WHERE email = ?', [email]);
+    return db.execute('SELECT * FROM `user` WHERE email = ?', [email]);
   }
 
   static findByUserName(username) {
-    return db.execute('SELECT * FROM user WHERE username = ?', [username]);
+    return db.execute('SELECT * FROM `user` WHERE username = ?', [username]);
   }
 
   static save(user) {
     return db.execute(
-      'INSERT INTO user (name, email, username, password) VALUES (?, ?, ?, ?)',
+      'INSERT INTO `user` (name, email, username, password) VALUES (?, ?, ?, ?)',
       [user.name, user.email, user.username, user.password]
+    );
+  }
+
+  static verify(userId){
+    return db.execute(
+      'UPDATE `user` SET `role` = ? WHERE `id` = ?',
+      ["verified_user", userId]
     );
   }
 };

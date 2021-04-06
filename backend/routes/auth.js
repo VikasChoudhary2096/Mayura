@@ -6,6 +6,8 @@ const router = express.Router();
 
 const User = require('../models/customer');
 
+const auth = require('../middleware/auth');
+
 const authController = require('../controllers/auth');
 
 router.post(
@@ -38,5 +40,7 @@ router.post(
 );
 
 router.post('/login', authController.login);
+
+router.post('/verify', auth, authController.verify);
 
 module.exports = router;
